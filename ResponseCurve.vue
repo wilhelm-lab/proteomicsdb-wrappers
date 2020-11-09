@@ -1,15 +1,14 @@
 <template>
-  <v-layout row v-if="responseCurveModel" class="float-left">
-    <lineplot 
-      id="ic50Plot"
-      :curveParameters="responseCurveModel.parameter"
-      :dataPoints="responseCurveModel.data"
-      :minHeight="minHeight"
-      :minWidth="minWidth"
-      title="Dose response curve for selected drug/cell line combination"
-      :properties="responseCurveModel.properties"
-      />
-  </v-layout>
+  <lineplot 
+    v-if="responseCurveModel"
+    id="ic50Plot"
+    :curveParameters="responseCurveModel.parameter"
+    :dataPoints="responseCurveModel.data"
+    :minHeight="minHeight"
+    :minWidth="minWidth"
+    title="Dose response curve for selected drug/cell line combination"
+    :properties="responseCurveModel.properties"
+    />
 </template>
 
 <script>
@@ -34,7 +33,7 @@ export default {
         type: String,
         default: ''
     },
-    selectDataset: {
+    selectedDataset: {
         type: Object,
         default: null
     }
@@ -56,23 +55,17 @@ export default {
     getData: function () {  
       let that = this
       let urlCurveData = '/proteomicsdb/logic/cellSelectivity/getCurveData.xsjs'
-      if (this.sModelIds !== '' && this.selectDataset) {
+      if (this.sModelIds !== '' && this.selectedDataset) {
         axios.get(urlCurveData, {
           params: {
             dr_model_ids: this.sModelIds,
-            dataset_id: this.selectDataset.datasetId
+            dataset_id: this.selectedDataset.datasetId
           }})
           .then(function (response) {
             that.responseCurveModel = response.data
           })
       } else {
-        axios.get(urlCurveData, {
-          params: {
-            dr_model_ids: '-10'
-          }})
-          .then(function (response) {
-            that.responseCurveModel = response.data
-          })
+        this.responseCurveModel = null
       }
     }
   }
