@@ -6,7 +6,7 @@
     :dataPoints="responseCurveModel.data"
     :minHeight="minHeight"
     :minWidth="minWidth"
-    title="Dose response curve for selected drug/cell line combination"
+    :title="title"
     :properties="responseCurveModel.properties"
     />
 </template>
@@ -29,6 +29,10 @@ export default {
         type: Number,
         default: 200
     },
+    title: {
+        type: String,
+        default: ''
+    },
     sModelIds: {
         type: String,
         default: ''
@@ -36,6 +40,10 @@ export default {
     selectedDataset: {
         type: Object,
         default: null
+    },
+    dataType: {
+        type: String,
+        default: 'cellSelectivity'
     }
   },
   data: function () {
@@ -54,7 +62,7 @@ export default {
   methods: {
     getData: function () {  
       let that = this
-      let urlCurveData = '/proteomicsdb/logic/cellSelectivity/getCurveData.xsjs'
+      let urlCurveData = '/proteomicsdb/logic/' + this.dataType + '/getCurveData.xsjs'
       if (this.sModelIds !== '' && this.selectedDataset) {
         axios.get(urlCurveData, {
           params: {
