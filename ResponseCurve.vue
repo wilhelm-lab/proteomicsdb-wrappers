@@ -8,6 +8,7 @@
     :minWidth="minWidth"
     :title="title"
     :properties="responseCurveModel.properties"
+    @update-curve-styles="updateCurveStyles"
     />
 </template>
 
@@ -75,6 +76,9 @@ export default {
       } else {
         this.responseCurveModel = null
       }
+    },
+    updateCurveStyles: function (oCurveStyleMapping) {
+      this.$emit('update-curve-styles', oCurveStyleMapping)
     }
   }
 }
