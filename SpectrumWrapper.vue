@@ -35,6 +35,7 @@
                        :item-text="modSelectOption"
                        label="Selected modifications"
                        multiple
+                       clear-on-select
                        chips
                        deletable-chips
                        return-object
@@ -215,6 +216,14 @@ export default {
     spectrumEntry: {
       type: Object,
       default: ()=> {}
+    },
+    peptideId: {
+      type: String,
+      default: undefined
+    },
+    peptideSequence: {
+      type: String,
+      default: undefined
     }
   },
   data: function () {
@@ -576,6 +585,9 @@ export default {
         this.loadMods(false);
       }
     },
+    peptideSequence: function (newSeq) {
+      this.mirrorSequence = newSeq;
+    },
     spectrumEntry: function(newData) {
       if (newData) {
         this.initializeModel();
@@ -893,6 +905,27 @@ export default {
           }
         }
       }
+
+      if (topSpectrum) {
+        this.mods = this.mods.sort(this.sortMods);
+      } else {
+        this.modsBottom = this.modsBottom.sort(this.sortMods);
+      }
+    },
+    sortMods: function(x,y) {
+      let xName = x.name.toLowerCase();
+      let yName = y.name.toLowerCase();
+      
+      let xSite = x.site.toLowerCase();
+      let ySite = y.site.toLowerCase();
+
+      if (xName < yName) return -1;
+      if (xName > yName) return 1;
+      if (xSite < ySite) return -1;
+      if (xSite > ySite) return 1;
+      if (x.index < y.index) return -1;
+      if (x.index > y.index) return 1;
+      return 0;
     },
     nlChange: function () {
       if(this.nlCount > this.maxNlCount) {
@@ -1102,15 +1135,15 @@ export default {
           this.plotData(this.topPeaks);
         }
       }
+      this.$emit('plottingFinished', null);
     },
-    initializeModel: function () {
+    preInitializeModel: function () {
       this.nl.forEach((n) => {
         this.fragmentTypes[n.name] =  { selected: false};
       });
 
-      var oData = this.spectrumEntry;
       var oSpectrumData = {
-        identificationID: oData.IDENTIFICATION_ID,
+        identificationID: null,
         selectedIonList: [{y:[1]}, {b:[1]}],
         selectedExtraPeakList: [ 'M' ],
         selectedNeutralLossList: [],
@@ -1125,6 +1158,62 @@ export default {
         neutralLossLimit: this.nlCount,
         expertMode: this.expert,
         instrumentId: 0,
+        sequence: this.peptideSequence,
+        maxX: null,
+        peptideId: this.peptideId,
+        mz: null,
+        massError: null,
+        charge: null,
+        precursorCharge: null,
+        file: null,
+        scan: null,
+        variableModifications: '',
+        fixedModifications: '',
+        fragmentTypes: this.getFragmentTypes(),
+        matchingType: "% Base Peak",
+        cutoff: 0,
+        modString: '',
+        aMods: []
+      };
+
+      this.mirrorSequence = this.peptideSequence;
+      this.mirrorSequencePrecursorCharge = 2;
+
+      // Update model
+      this.oSpectrumModel = {
+        data: oSpectrumData
+      };
+
+      this.oReferenceSpectrumModel = {
+        data: Object.assign({},oSpectrumData)
+      };
+
+      this.oReferenceSpectrumModel.data.sequence = this.mirrorSequence;
+      this.oReferenceSpectrumModel.data.precursorCharge = this.mirrorSequencePrecursorCharge;
+
+      this.mods = [];
+      this.modsBottom = [];
+      this.modObject = { selectedMods: [] };
+      this.modObjectBottom = { selectedMods: [] };
+      this.loadMods();
+      this.loadMods(false);
+      setTimeout(() => {
+        this.setPreselectedMods(false);
+      }, 50);
+    },
+    initializeModel: function () {
+      this.nl.forEach((n) => {
+        this.fragmentTypes[n.name] =  { selected: false};
+      });
+
+      let oData = this.spectrumEntry;
+      var oSpectrumData = {
+        identificationID: oData.IDENTIFICATION_ID,
+        massTolerance: this.massTolerance[this.selectedMassTolerance + 0].value,
+        massToleranceUnit: this.selectedMassTolerance + 1, // default is Dalton
+        massToleranceType: this.massTolerance[this.selectedMassTolerance + 0].text, // default is Dalton
+        neutralLossLimit: this.nlCount,
+        expertMode: this.expert,
         sequence: oData.PEPTIDE_SEQUENCE,
         maxX: Math.round(oData.MASS * 10000) / 10000 || undefined,
         peptideId: oData.PEPTIDE_ID,
@@ -1137,15 +1226,13 @@ export default {
         variableModifications: oData.VARIABLE_MODIFICATION_STRING || '',
         fixedModifications: oData.FIXED_MODIFICATION_STRING || '',
         fragmentTypes: this.getFragmentTypes(),
-        matchingType: "% Base Peak",
-        cutoff: 0,
-        modString: '',
-        aMods: []
+        matchingType: "% Base Peak"
       };
 
       this.mirrorSequence = oData.PEPTIDE_SEQUENCE;
       this.mirrorSequencePrecursorCharge = oData.PRECURSOR_CHARGE;
-
+      
+      oSpectrumData = {...this.oSpectrumModel.data ,...oSpectrumData};
       // Update model
       this.oSpectrumModel = {
         data: oSpectrumData
@@ -1158,17 +1245,9 @@ export default {
       this.oReferenceSpectrumModel.data.sequence = oData.PEPTIDE_SEQUENCE;
       this.oReferenceSpectrumModel.data.precursorCharge = oData.PRECURSOR_CHARGE;
 
-      this.mods = [];
-      this.modsBottom = [];
-      this.modObject = { selectedMods: [] };
-      this.modObjectBottom = { selectedMods: [] };
-      this.loadMods();
-      this.loadMods(false);
-      setTimeout(() => {
-        this.setPreselectedMods(false);
-        this.getSpectrumData();
-        this.getReferenceSpectra(this.spectrumEntry.PEPTIDE_ID, this.spectrumEntry.PRECURSOR_CHARGE);
-      }, 100);
+      this.setPreselectedMods(false);
+      this.getSpectrumData();
+      this.getReferenceSpectra(this.spectrumEntry.PEPTIDE_ID, this.spectrumEntry.PRECURSOR_CHARGE);
     },
     resetBottomMods: function () {
       this.modsBottom= [];
@@ -1274,7 +1353,6 @@ export default {
         ],
         "origin": "Origin"
       };
-      this.oReferenceSpectrumModel= {};
       this.score= {
         sa: 0.00,
         corr: 0.00
@@ -1290,7 +1368,6 @@ export default {
     },
     resetAll: function() {
       this.panel= 0;
-      this.oSpectrumModel= {};
       this.mods= [];
       this.modObject= { selectedMods: [] };
       this.predeterminedMods= [];
@@ -2114,6 +2191,7 @@ export default {
   computed: {
   },
   mounted() {
+    this.preInitializeModel();
   }
 }
 </script>
