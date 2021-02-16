@@ -2,7 +2,6 @@
   <v-card style="height:750px;max-height:750px;" class="pt-2">
   <bodymap id='expressionBodymap'
     :data="bodyMapData"
-    :selectedGender="selectedGender"
     :selectedOrganism="selectedOrganism"
     @organSelected="organSelected"
     ref="bodymap"
@@ -55,10 +54,6 @@ export default {
     calculation: {
       type: String,
       default: null
-    },
-    selectedGender: {
-      type: String,
-      default: ''
     },
     selectedOrganism: {
       type: Object,
