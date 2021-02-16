@@ -224,6 +224,10 @@ export default {
     peptideSequence: {
       type: String,
       default: undefined
+    },
+    isReferenceSpectrum: {
+      type: Boolean,
+      default: false
     }
   },
   data: function () {
@@ -1153,7 +1157,7 @@ export default {
         maxYRefSpectrum: 0,
         massToleranceUnit: this.selectedMassTolerance + 1, // default is Dalton
         massToleranceType: this.massTolerance[this.selectedMassTolerance + 0].text, // default is Dalton
-        isReferenceSpectrum: false,
+        isReferenceSpectrum: this.isReferenceSpectrum,
         showReferenceSpectrum: false,
         neutralLossLimit: this.nlCount,
         expertMode: this.expert,
@@ -1208,13 +1212,13 @@ export default {
 
       let oData = this.spectrumEntry;
       var oSpectrumData = {
-        identificationID: oData.IDENTIFICATION_ID,
+        identificationID: this.isReferenceSpectrum ? oData.REFERENCE_IDENTIFICATION_ID : oData.IDENTIFICATION_ID,
         massTolerance: this.massTolerance[this.selectedMassTolerance + 0].value,
         massToleranceUnit: this.selectedMassTolerance + 1, // default is Dalton
         massToleranceType: this.massTolerance[this.selectedMassTolerance + 0].text, // default is Dalton
         neutralLossLimit: this.nlCount,
         expertMode: this.expert,
-        sequence: oData.PEPTIDE_SEQUENCE,
+        sequence: this.isReferenceSpectrum ? oData.SEQUENCE : oData.PEPTIDE_SEQUENCE,
         maxX: Math.round(oData.MASS * 10000) / 10000 || undefined,
         peptideId: oData.PEPTIDE_ID,
         mz: Math.round(oData.PRECURSOR_MZ * 10000) / 10000 || undefined,
@@ -1229,7 +1233,7 @@ export default {
         matchingType: "% Base Peak"
       };
 
-      this.mirrorSequence = oData.PEPTIDE_SEQUENCE;
+      this.mirrorSequence = this.isReferenceSpectrum ? oData.SEQUENCE : oData.PEPTIDE_SEQUENCE;
       this.mirrorSequencePrecursorCharge = oData.PRECURSOR_CHARGE;
       
       oSpectrumData = {...this.oSpectrumModel.data ,...oSpectrumData};
@@ -1242,8 +1246,8 @@ export default {
         data: Object.assign({},oSpectrumData)
       };
 
-      this.oReferenceSpectrumModel.data.sequence = oData.PEPTIDE_SEQUENCE;
-      this.oReferenceSpectrumModel.data.precursorCharge = oData.PRECURSOR_CHARGE;
+      this.oReferenceSpectrumModel.data.sequence = this.mirrorSequence;
+      this.oReferenceSpectrumModel.data.precursorCharge =  this.mirrorSequencePrecursorCharge;
 
       this.setPreselectedMods(false);
       this.getSpectrumData();
