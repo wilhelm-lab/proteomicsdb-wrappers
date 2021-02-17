@@ -33,6 +33,7 @@ var utils = {
             oLink.click();
             document.body.removeChild(oLink);
         };
+        return true;
     },
 
     /**
@@ -61,6 +62,7 @@ var utils = {
             oLink.click();
             document.body.removeChild(oLink);
         }
+        return true;
     },
 
     /**
@@ -149,6 +151,7 @@ var utils = {
         } else {
             this.downloadSVG(scalingSVG, sName);
         }
+        return true;
     },
     
     downloadCSS: function(path) {
@@ -177,6 +180,7 @@ var utils = {
             oLink.click();
             document.body.removeChild(oLink);
         }
+        return true;
     },
 
     /**
@@ -201,6 +205,7 @@ var utils = {
             oLink.click();
             document.body.removeChild(oLink);
         }
+        return true;
     },
 
     /**

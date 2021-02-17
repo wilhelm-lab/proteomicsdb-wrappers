@@ -109,6 +109,9 @@ export default {
     },
     organSelected: function (data) {
       this.$emit('organSelected', data)
+    },
+    getSVG: function () {
+      return this.$refs.bodymap.getSVG();
     }
   },
   mounted() {

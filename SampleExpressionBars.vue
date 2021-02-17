@@ -195,6 +195,9 @@ export default {
       .then(function (response) {
         that.barData = response.data;
       })
+    },
+    getSVG: function () {
+      return this.$refs.expressionbarsref.getSVG();
     }
   },
   mounted() {

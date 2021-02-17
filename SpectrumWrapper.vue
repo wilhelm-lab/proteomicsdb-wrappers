@@ -1783,7 +1783,6 @@ export default {
           that.mergeAndCalculateScores();
         })
         .catch(error => {
-          console.log(error.response.data.message);
           that.prositError.push(error.response.data.message);
           that.resetBottom();
         });
