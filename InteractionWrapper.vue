@@ -368,7 +368,6 @@ export default {
               arrowtype: sArrowType,
               relation_ids: sRelation_ids
             }}).then(function (response) {
-              console.log(response.data);
               that.overlayData = response.data;
               that.isEdgeSelected = true;
       });

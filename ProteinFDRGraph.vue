@@ -1,5 +1,6 @@
 <template>
   <fdrplot
+  ref="fdrRef"
   id='proteinFDR'
   :height='"300px"'
   :data='geneFdrModel'
@@ -80,6 +81,9 @@ export default {
           that.enrichment = response.data.enrichment
           that.qValue = response.data.Q_VALUE
         })
+    },
+    getSVG: function() {
+      return this.$refs.fdrRef.getSVG();
     }
   },
   mounted() {

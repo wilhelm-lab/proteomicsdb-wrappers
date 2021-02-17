@@ -88,6 +88,9 @@ export default {
     },
     barSelected: function(data) {
       this.$emit('barSelected', data);
+    },
+    getSVG: function() {
+      return this.$refs.expressionbarsref.getSVG();
     }
   },
   mounted() {

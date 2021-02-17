@@ -1,5 +1,6 @@
 <template>
   <fdrplot
+  ref="fdrRef"
   id='specificGeneFDR'
   :height='"300px"'
   :data='geneFdrModel'
@@ -59,6 +60,9 @@ export default {
         .then(function (response) {
           that.geneFdrModel = response.data
         })
+    },
+    getSVG: function() {
+      return this.$refs.fdrRef.getSVG();
     }
   },
   mounted() {

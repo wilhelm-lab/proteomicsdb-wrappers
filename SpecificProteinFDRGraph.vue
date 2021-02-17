@@ -1,5 +1,6 @@
 <template>
   <fdrplot
+  ref="fdrRef"
   id='specificProteinFDR'
   :height='"300px"'
   :data='geneFdrModel'
@@ -49,16 +50,19 @@ export default {
   },
   methods: {
     getData: function () {  
-        let that = this
+      let that = this
 
-        let urlDatasets = 'https://www.proteomicsdb.org/proteomicsdb/logic/fdr/getProteinSpecificFDR.xsjs'
-        axios.get(urlDatasets, {
-          params: {
-            proteinId: this.proteinId
-        }})
-        .then(function (response) {
-          that.geneFdrModel = response.data
-        })
+      let urlDatasets = 'https://www.proteomicsdb.org/proteomicsdb/logic/fdr/getProteinSpecificFDR.xsjs'
+      axios.get(urlDatasets, {
+        params: {
+          proteinId: this.proteinId
+      }})
+      .then(function (response) {
+        that.geneFdrModel = response.data
+      })
+    },
+    getSVG: function() {
+      return this.$refs.fdrRef.getSVG();
     }
   },
   mounted() {
