@@ -12,6 +12,7 @@
 <script>
 import axios from 'axios';
 import bodymap from '@/vue-d3-components/Bodymap';
+import Helper from '@/vue-d3-component-wrappers/common-lib/Helper.js';
 
 export default {
   name: 'proteinExpressionBodymap',
@@ -28,6 +29,10 @@ export default {
       default: 400
     },
     proteinId: {
+      type: String,
+      default: null
+    },
+    proteinAccession: {
       type: String,
       default: null
     },
@@ -112,6 +117,63 @@ export default {
     },
     getSVG: function () {
       return this.$refs.bodymap.getSVG();
+    },
+    getCSV: function () {
+      var aColumnMapping = [];
+      var title = '';
+      if (this.omicsType === 'Proteomics') {
+        aColumnMapping = [{
+          jsonProperty: 'TISSUE_ID',
+          columnName: 'Tissue ID'
+        }, {
+          jsonProperty: 'TISSUE_NAME',
+          columnName: 'Tissue'
+        }, {
+          jsonProperty: 'SAP_SYNONYM',
+          columnName: 'Tissue Synonym'
+        }, {
+          jsonProperty: 'UNNORMALIZED_INTENSITY',
+          columnName: 'Average Unnormalized Intensity'
+        }, {
+          jsonProperty: 'NORMALIZED_INTENSITY',
+          columnName: 'Average Normalized Intensity'
+        }, {
+          jsonProperty: 'MAX_NORMALIZED_INTENSITY',
+          columnName: 'Maximum Normalized Intensity'
+        }, {
+          jsonProperty: 'MIN_NORMALIZED_INTENSITY',
+          columnName: 'Minimum Normalized Intensity'
+        }, {
+          jsonProperty: 'SAMPLES',
+          columnName: 'Number of Samples'
+        }];
+        title = 'Protein Expression: ' + this.proteinAccession;
+      } else {
+        aColumnMapping = [{
+          jsonProperty: 'TISSUE_ID',
+          columnName: 'Tissue ID'
+        }, {
+          jsonProperty: 'TISSUE_NAME',
+          columnName: 'Tissue'
+        }, {
+          jsonProperty: 'SAP_SYNONYM',
+          columnName: 'Tissue Synonym'
+        }, {
+          jsonProperty: 'NORMALIZED_INTENSITY',
+          columnName: 'Average ' + this.calculation
+        }, {
+          jsonProperty: 'MAX_NORMALIZED_INTENSITY',
+          columnName: 'Maximum ' + this.calculation
+        }, {
+          jsonProperty: 'MIN_NORMALIZED_INTENSITY',
+          columnName: 'Minimum ' + this.calculation
+        }, {
+          jsonProperty: 'NUMBER_OF_SAMPLES',
+          columnName: 'Number of Samples'
+        }];
+        title = 'mRNA Expression: ' + this.proteinAccession;
+      }
+      return Helper.downloadCsvFromJson(this.bodyMapData, title, aColumnMapping);
     }
   },
   mounted() {
