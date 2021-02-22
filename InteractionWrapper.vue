@@ -322,6 +322,7 @@ export default {
       var sRelationTypeIds = this.getSelectedRelationTypeIds();
       this.PlotInformationModel.sRelationTypeIds = sRelationTypeIds;
       this.PlotInformationModel.visible = true;
+      this.$emit('dataLoaded',null);
     },
     onRetrievalChange: function(data){
       this.UiModel.visibleRetrieval = data.value;

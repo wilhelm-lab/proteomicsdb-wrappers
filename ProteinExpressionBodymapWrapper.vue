@@ -1,10 +1,14 @@
 <template>
-  <v-card style="height:750px;max-height:750px;" class="pt-2">
+  <v-card :height="height" :max-height="maxHeight">
+    <v-toolbar v-if="showToolbar" :color="color" dark class="mb-2" elevation="2">
+      <v-card-title>Protein Expression</v-card-title>
+    </v-toolbar>
   <bodymap id='expressionBodymap'
     :data="bodyMapData"
     :selectedOrganism="selectedOrganism"
     @organSelected="organSelected"
     ref="bodymap"
+    class="pt-2"
   />
   </v-card>
 </template>
@@ -24,9 +28,21 @@ export default {
       type: Number,
       default: 400
     },
-    minHeight: {
-      type: Number,
-      default: 400
+    maxHeight: {
+      type: String,
+      default: '750px'
+    },
+    height: {
+      type: String,
+      default: '750px'
+    },
+    showToolbar: {
+      type: Boolean,
+      default: false
+    },
+    color: {
+      type: String,
+      default: 'black'
     },
     proteinId: {
       type: String,
