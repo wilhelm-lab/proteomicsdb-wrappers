@@ -1,6 +1,6 @@
 <template>
   <v-card :height="height" :max-height="maxHeight">
-    <v-toolbar v-if="showToolbar" :color="color" dark class="mb-2" elevation="2">
+    <v-toolbar v-if="showToolbar" :color="color" dark class="mb-2" elevation="2" dense>
       <v-card-title>Protein Expression</v-card-title>
     </v-toolbar>
   <bodymap id='expressionBodymap'
