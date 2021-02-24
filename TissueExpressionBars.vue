@@ -89,6 +89,9 @@ export default {
     barSelected: function(data) {
       this.$emit('barSelected', data);
     },
+    resetBarSelection: function () {
+      this.$refs.expressionbarsref.resetBarSelection();
+    },
     getSVG: function() {
       return this.$refs.expressionbarsref.getSVG();
     }

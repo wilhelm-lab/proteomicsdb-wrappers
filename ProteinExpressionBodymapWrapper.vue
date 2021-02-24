@@ -7,6 +7,7 @@
     :data="bodyMapData"
     :selectedOrganism="selectedOrganism"
     @organSelected="organSelected"
+    @resetSelections="resetSelections"
     ref="bodymap"
     class="pt-2"
   />
@@ -128,8 +129,11 @@ export default {
     toggleOrgan: function (name) {
       this.$refs.bodymap.toggleOrgan(name);
     },
+    resetSelections: function () {
+      this.$emit('resetSelections', null);
+    },
     organSelected: function (data) {
-      this.$emit('organSelected', data)
+      this.$emit('organSelected', data);
     },
     getSVG: function () {
       return this.$refs.bodymap.getSVG();
