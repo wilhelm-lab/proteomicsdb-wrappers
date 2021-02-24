@@ -6,6 +6,7 @@
   <bodymap id='expressionBodymap'
     :data="bodyMapData"
     :selectedOrganism="selectedOrganism"
+    :drawOnMount="drawOnMount"
     @organSelected="organSelected"
     @resetSelections="resetSelections"
     ref="bodymap"
@@ -44,6 +45,10 @@ export default {
     color: {
       type: String,
       default: 'black'
+    },
+    drawOnMount: {
+      type: Boolean,
+      default: false
     },
     proteinId: {
       type: String,
