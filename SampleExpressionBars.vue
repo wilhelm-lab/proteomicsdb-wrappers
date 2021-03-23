@@ -181,7 +181,7 @@ export default {
     getData: function () {  
       let that = this;
 
-      let urlDatasets = 'https://www.proteomicsdb.org/proteomicsdb/logic/getExpressionWrapper.xsjs'
+      let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/getExpressionWrapper.xsjs'
       axios.get(urlDatasets, { params: {
           protein_id: that.proteinId,
           quantification: that.quantification,

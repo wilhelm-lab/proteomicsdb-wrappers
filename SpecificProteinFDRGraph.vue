@@ -52,7 +52,7 @@ export default {
     getData: function () {  
       let that = this
 
-      let urlDatasets = 'https://www.proteomicsdb.org/proteomicsdb/logic/fdr/getProteinSpecificFDR.xsjs'
+      let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/fdr/getProteinSpecificFDR.xsjs'
       axios.get(urlDatasets, {
         params: {
           proteinId: this.proteinId

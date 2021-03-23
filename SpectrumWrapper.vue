@@ -1760,7 +1760,7 @@ export default {
       this.oReferenceSpectrumModel.data.precursorCharge = that.mirrorSequencePrecursorCharge;
 
       if (this.mirrorOrigin === 0) {
-        url = 'https://www.proteomicsdb.org/logic/api/getFragmentationPrediction.xsjs';
+        url = this.$store.state.host+'/logic/api/getFragmentationPrediction.xsjs';
         params = {
           sequence: [that.mirrorSequence],
           charge: [that.mirrorSequencePrecursorCharge],
@@ -1788,7 +1788,7 @@ export default {
         });
       } else {
         var id = that.selectedReferenceSpectrum;
-        url = 'https://www.proteomicsdb.org/logic/getReferenceSpectrumInformation.xsjs'
+        url = this.$store.state.host+'/logic/getReferenceSpectrumInformation.xsjs'
         params = {
           id: id.key.split("-")[0],
           origin: id.key.split("-")[1]
@@ -1812,9 +1812,9 @@ export default {
       var url;
 
       if (oSpectrumData.isReferenceSpectrum) {
-        url = 'https://www.proteomicsdb.org/proteomicsdb/logic/getReferenceSpectrumInformationNew.xsjs'
+        url = this.$store.state.host+'/proteomicsdb/logic/getReferenceSpectrumInformationNew.xsjs'
       } else {
-        url = 'https://www.proteomicsdb.org/proteomicsdb/logic/getSpectrumInformationNew.xsjs'
+        url = this.$store.state.host+'/proteomicsdb/logic/getSpectrumInformationNew.xsjs'
       }
 
 
@@ -2050,7 +2050,7 @@ export default {
     getReferenceSpectra: function(iPeptideId, iCharge){
       var that = this;
 
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/getReferenceSpectrum.xsjs', { params: {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/getReferenceSpectrum.xsjs', { params: {
           id: iPeptideId,
           charge: iCharge
         }
@@ -2186,7 +2186,7 @@ export default {
 
     getAccessionId: function() {
       var that = this;
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/pathways/getAccessionId.xsjs', {params: {protein_id: that.proteinId}}).then(function (response) {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/pathways/getAccessionId.xsjs', {params: {protein_id: that.proteinId}}).then(function (response) {
         that.PlotInformationModel.AccessionId = response.data.AccessionId;
       })
     }

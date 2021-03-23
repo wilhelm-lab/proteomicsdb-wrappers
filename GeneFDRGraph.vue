@@ -58,7 +58,7 @@ export default {
     getData: function () {  
         let that = this
 
-        let urlDatasets = 'https://www.proteomicsdb.org/proteomicsdb/logic/fdr/getGeneFDR.xsjs'
+        let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/fdr/getGeneFDR.xsjs'
         axios.get(urlDatasets, {
           params: {
             proteinId: this.proteinId
@@ -70,7 +70,7 @@ export default {
     getGeneScores: function () {  
         let that = this
 
-        let urlDatasets = 'https://www.proteomicsdb.org/proteomicsdb/logic/fdr/getGeneFDRScore.xsjs'
+        let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/fdr/getGeneFDRScore.xsjs'
         axios.get(urlDatasets, {
           params: {
             proteinId: this.proteinId
