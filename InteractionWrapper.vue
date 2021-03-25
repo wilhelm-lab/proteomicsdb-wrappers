@@ -159,7 +159,9 @@
                                   @visibleRetrieval="onRetrievalChange"
                                   :accessionId="PlotInformationModel.AccessionId"
                                   :sRelationTypeIds="PlotInformationModel.sRelationTypeIds"
-                                  :endpointAccession="'https://www.proteomicsdb.org/logic/pathways/getAccessionId.xsjs?protein_id=__parameter1__'"
+                                  :endpointAccession="$store.state.host+'/logic/pathways/getAccessionId.xsjs?protein_id=__parameter1__'"
+                                  :endpointMarker="$store.state.host+'/logic/pathways/getAllMarkers.xsjs'"
+                                  :endpointSuperNodeInfo="$store.state.host+'/logic/pathways/getSuperNodeInfo.xsjs'"
                                   @disableNodeTab="disableNodeTab"
                                   @keyChange="onKeyChange"
                                   @showOverlay="onShowOverlay"
@@ -168,7 +170,7 @@
                                   @NodeModel="onNodeSelection"
                                   @radioButtons="setGraphRadioModel"
                                   :heatmapLinkGenerator="heatmapLinkFormatter"
-                                  :endpoint="'https://www.proteomicsdb.org/logic/pathways/getPathwayGraphForProteinId.xsjs?accession_id=__parameter1__&amp;resource_type=__parameter2__&amp;relation_ids=__parameter3__&amp;offset=__parameter4__&amp;new_graph=__parameter5__&amp;sn_exist=__parameter6__'" />
+                                  :endpoint="this.$store.state.host+'/logic/pathways/getPathwayGraphForProteinId.xsjs?accession_id=__parameter1__&amp;resource_type=__parameter2__&amp;relation_ids=__parameter3__&amp;offset=__parameter4__&amp;new_graph=__parameter5__&amp;sn_exist=__parameter6__'" />
               </v-col>
               <edgePopup :openDialog="isEdgeSelected" :inputData="overlayData" @closePopUp="disablePopUp"/>
             </v-row>
@@ -257,14 +259,14 @@ export default {
   methods: {
     getAccessionId: function() {
       var that = this;
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/pathways/getAccessionId.xsjs', {params: {protein_id: that.proteinId}}).then(function (response) {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/pathways/getAccessionId.xsjs', {params: {protein_id: that.proteinId}}).then(function (response) {
         that.PlotInformationModel.AccessionId = response.data.AccessionId;
       })
     },
     getRelations: function() {
       var that = this;
       this.modifiedRelationSelection = true;
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/pathways/getAllRelationTypes.xsjs', {}).then(function (response) {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/pathways/getAllRelationTypes.xsjs', {}).then(function (response) {
         var aRelationTypes = response.data;
         aRelationTypes = aRelationTypes.map(function(dataset) {
           dataset.Children = dataset.Children.map(function(elements) {
@@ -362,7 +364,7 @@ export default {
       var sRelation_ids = oEvent.relation_ids;
       var that = this;
 
-      axios.get('https://www.proteomicsdb.org/proteomicsdb/logic/pathways/getEdgeInfo.xsjs', {params: {
+      axios.get(this.$store.state.host+'/proteomicsdb/logic/pathways/getEdgeInfo.xsjs', {params: {
               source: sSource,
               target: sTarget,
               directional: sDirectional,
@@ -403,19 +405,19 @@ export default {
       utils.downloadFile(aCSVRows, sFileName, 'sif');
     },
     proteinLinkFormatter: function proteinLinkFormatter(iProteinId) {
-      window.open('/protein/summary/'+ iProteinId, '_blank');
+      window.open('/protein/'+iProteinId+'/summary', '_blank');
     },
 
     proteinLinkBcFormatter: function proteinLinkBcFormatter(iProteinId) {
-      window.open('/protein/assay/'+ iProteinId, '_blank');
+      window.open('/protein/'+iProteinId+'/assay', '_blank');
     },
 
     proteinLinkNodeFormatter: function proteinLinkNodeFormatter(iProteinId) {
-      window.open('/protein/interactions/'+ iProteinId, '_blank');
+      window.open('/protein/'+iProteinId+'/interactions', '_blank');
     },
 
     proteinLinkExpressionFormatter: function proteinLinkExpressionFormatter(iProteinId) {
-      window.open('/protein/expression/'+ iProteinId, '_blank');
+      window.open('/protein/'+iProteinId+'/expression', '_blank');
     },
 
     proteinLinkCtFormatter: function proteinLinkCtFormatter(asUniProtName) {
