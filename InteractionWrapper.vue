@@ -159,7 +159,9 @@
                                   @visibleRetrieval="onRetrievalChange"
                                   :accessionId="PlotInformationModel.AccessionId"
                                   :sRelationTypeIds="PlotInformationModel.sRelationTypeIds"
-                                  :endpointAccession="this.$store.state.host+'/logic/pathways/getAccessionId.xsjs?protein_id=__parameter1__'"
+                                  :endpointAccession="$store.state.host+'/logic/pathways/getAccessionId.xsjs?protein_id=__parameter1__'"
+                                  :endpointMarker="$store.state.host+'/logic/pathways/getAllMarkers.xsjs'"
+                                  :endpointSuperNodeInfo="$store.state.host+'/logic/pathways/getSuperNodeInfo.xsjs'"
                                   @disableNodeTab="disableNodeTab"
                                   @keyChange="onKeyChange"
                                   @showOverlay="onShowOverlay"
@@ -403,19 +405,19 @@ export default {
       utils.downloadFile(aCSVRows, sFileName, 'sif');
     },
     proteinLinkFormatter: function proteinLinkFormatter(iProteinId) {
-      window.open('/protein/summary/'+ iProteinId, '_blank');
+      window.open('/protein/'+iProteinId+'/summary', '_blank');
     },
 
     proteinLinkBcFormatter: function proteinLinkBcFormatter(iProteinId) {
-      window.open('/protein/assay/'+ iProteinId, '_blank');
+      window.open('/protein/'+iProteinId+'/assay', '_blank');
     },
 
     proteinLinkNodeFormatter: function proteinLinkNodeFormatter(iProteinId) {
-      window.open('/protein/interactions/'+ iProteinId, '_blank');
+      window.open('/protein/'+iProteinId+'/interactions', '_blank');
     },
 
     proteinLinkExpressionFormatter: function proteinLinkExpressionFormatter(iProteinId) {
-      window.open('/protein/expression/'+ iProteinId, '_blank');
+      window.open('/protein/'+iProteinId+'/expression', '_blank');
     },
 
     proteinLinkCtFormatter: function proteinLinkCtFormatter(asUniProtName) {
