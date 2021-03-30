@@ -159,9 +159,9 @@
                                   @visibleRetrieval="onRetrievalChange"
                                   :accessionId="PlotInformationModel.AccessionId"
                                   :sRelationTypeIds="PlotInformationModel.sRelationTypeIds"
-                                  :endpointAccession="$store.state.host+'/logic/pathways/getAccessionId.xsjs?protein_id=__parameter1__'"
-                                  :endpointMarker="$store.state.host+'/logic/pathways/getAllMarkers.xsjs'"
-                                  :endpointSuperNodeInfo="$store.state.host+'/logic/pathways/getSuperNodeInfo.xsjs'"
+                                  :endpointAccession="$store.state.host+'/proteomicsdb/logic/pathways/getAccessionId.xsjs?protein_id=__parameter1__'"
+                                  :endpointMarker="$store.state.host+'/proteomicsdb/logic/pathways/getAllMarkers.xsjs'"
+                                  :endpointSuperNodeInfo="$store.state.host+'/proteomicsdb/logic/pathways/getSuperNodeInfo.xsjs'"
                                   @disableNodeTab="disableNodeTab"
                                   @keyChange="onKeyChange"
                                   @showOverlay="onShowOverlay"
@@ -170,7 +170,7 @@
                                   @NodeModel="onNodeSelection"
                                   @radioButtons="setGraphRadioModel"
                                   :heatmapLinkGenerator="heatmapLinkFormatter"
-                                  :endpoint="this.$store.state.host+'/logic/pathways/getPathwayGraphForProteinId.xsjs?accession_id=__parameter1__&amp;resource_type=__parameter2__&amp;relation_ids=__parameter3__&amp;offset=__parameter4__&amp;new_graph=__parameter5__&amp;sn_exist=__parameter6__'" />
+                                  :endpoint="this.$store.state.host+'/proteomicsdb/logic/pathways/getPathwayGraphForProteinId.xsjs?accession_id=__parameter1__&amp;resource_type=__parameter2__&amp;relation_ids=__parameter3__&amp;offset=__parameter4__&amp;new_graph=__parameter5__&amp;sn_exist=__parameter6__'" />
               </v-col>
               <edgePopup :openDialog="isEdgeSelected" :inputData="overlayData" @closePopUp="disablePopUp"/>
             </v-row>
@@ -405,32 +405,32 @@ export default {
       utils.downloadFile(aCSVRows, sFileName, 'sif');
     },
     proteinLinkFormatter: function proteinLinkFormatter(iProteinId) {
-      window.open('/protein/'+iProteinId+'/summary', '_blank');
+      window.open('/vue/protein/'+iProteinId+'/summary', '_blank');
     },
 
     proteinLinkBcFormatter: function proteinLinkBcFormatter(iProteinId) {
-      window.open('/protein/'+iProteinId+'/assay', '_blank');
+      window.open('/vue/protein/'+iProteinId+'/assay', '_blank');
     },
 
     proteinLinkNodeFormatter: function proteinLinkNodeFormatter(iProteinId) {
-      window.open('/protein/'+iProteinId+'/interactions', '_blank');
+      window.open('/vue/protein/'+iProteinId+'/interactions', '_blank');
     },
 
     proteinLinkExpressionFormatter: function proteinLinkExpressionFormatter(iProteinId) {
-      window.open('/protein/'+iProteinId+'/expression', '_blank');
+      window.open('/vue/protein/'+iProteinId+'/expression', '_blank');
     },
 
     proteinLinkCtFormatter: function proteinLinkCtFormatter(asUniProtName) {
       if (typeof asUniProtName === 'string') {
-        window.open('/analytics/combinationTreatment?protein_name='+ asUniProtName, '_blank');
+        window.open('/vue/analytics/combinationTreatment?protein_name='+ asUniProtName, '_blank');
       } else if (typeof asUniProtName === 'undefined') {
         return '';
       }
-      window.open('/analytics/combinationTreatment?protein_name='+ asUniProtName.join(','), '_blank');
+      window.open('/vue/analytics/combinationTreatment?protein_name='+ asUniProtName.join(','), '_blank');
     },
 
     proteinLinkDsFormatter: function proteinLinkDsFormatter(sUniProtName) {
-      window.open('/analytics/selectivity?protein_name=' + sUniProtName, '_blank');
+      window.open('/vue/analytics/selectivity?protein_name=' + sUniProtName, '_blank');
     },
 
     // array consists of Data from D3 graph
@@ -439,7 +439,7 @@ export default {
         return '';
       }
       var iTaxCode = this.$store.state.cookie;
-      window.open('/analytics/expressionHeatmap?proteins=' + asUniProtNameHeatmap.join('%3B') + '&quantification=1&biologicalSource=tissue%3Bfluid&calculationMethod=0&swissprotOnly=1&noIsoforms=1&taxcode=' + iTaxCode, '_blank');
+      window.open('/vue/analytics/expressionHeatmap?proteins=' + asUniProtNameHeatmap.join('%3B') + '&quantification=1&biologicalSource=tissue%3Bfluid&calculationMethod=0&swissprotOnly=1&noIsoforms=1&taxcode=' + iTaxCode, '_blank');
     },
 
     setGraphRadioModel: function(oData) {
