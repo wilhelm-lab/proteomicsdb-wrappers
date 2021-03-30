@@ -1760,7 +1760,7 @@ export default {
       this.oReferenceSpectrumModel.data.precursorCharge = that.mirrorSequencePrecursorCharge;
 
       if (this.mirrorOrigin === 0) {
-        url = this.$store.state.host+'/logic/api/getFragmentationPrediction.xsjs';
+        url = this.$store.state.host+'/proteomicsdb/logic/api/getFragmentationPrediction.xsjs';
         params = {
           sequence: [that.mirrorSequence],
           charge: [that.mirrorSequencePrecursorCharge],
@@ -1788,7 +1788,7 @@ export default {
         });
       } else {
         var id = that.selectedReferenceSpectrum;
-        url = this.$store.state.host+'/logic/getReferenceSpectrumInformation.xsjs'
+        url = this.$store.state.host+'/proteomicsdb/logic/getReferenceSpectrumInformation.xsjs'
         params = {
           id: id.key.split("-")[0],
           origin: id.key.split("-")[1]

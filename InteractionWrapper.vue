@@ -159,9 +159,9 @@
                                   @visibleRetrieval="onRetrievalChange"
                                   :accessionId="PlotInformationModel.AccessionId"
                                   :sRelationTypeIds="PlotInformationModel.sRelationTypeIds"
-                                  :endpointAccession="$store.state.host+'/logic/pathways/getAccessionId.xsjs?protein_id=__parameter1__'"
-                                  :endpointMarker="$store.state.host+'/logic/pathways/getAllMarkers.xsjs'"
-                                  :endpointSuperNodeInfo="$store.state.host+'/logic/pathways/getSuperNodeInfo.xsjs'"
+                                  :endpointAccession="$store.state.host+'/proteomicsdb/logic/pathways/getAccessionId.xsjs?protein_id=__parameter1__'"
+                                  :endpointMarker="$store.state.host+'/proteomicsdb/logic/pathways/getAllMarkers.xsjs'"
+                                  :endpointSuperNodeInfo="$store.state.host+'/proteomicsdb/logic/pathways/getSuperNodeInfo.xsjs'"
                                   @disableNodeTab="disableNodeTab"
                                   @keyChange="onKeyChange"
                                   @showOverlay="onShowOverlay"
@@ -170,7 +170,7 @@
                                   @NodeModel="onNodeSelection"
                                   @radioButtons="setGraphRadioModel"
                                   :heatmapLinkGenerator="heatmapLinkFormatter"
-                                  :endpoint="this.$store.state.host+'/logic/pathways/getPathwayGraphForProteinId.xsjs?accession_id=__parameter1__&amp;resource_type=__parameter2__&amp;relation_ids=__parameter3__&amp;offset=__parameter4__&amp;new_graph=__parameter5__&amp;sn_exist=__parameter6__'" />
+                                  :endpoint="this.$store.state.host+'/proteomicsdb/logic/pathways/getPathwayGraphForProteinId.xsjs?accession_id=__parameter1__&amp;resource_type=__parameter2__&amp;relation_ids=__parameter3__&amp;offset=__parameter4__&amp;new_graph=__parameter5__&amp;sn_exist=__parameter6__'" />
               </v-col>
               <edgePopup :openDialog="isEdgeSelected" :inputData="overlayData" @closePopUp="disablePopUp"/>
             </v-row>
