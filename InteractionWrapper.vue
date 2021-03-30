@@ -405,32 +405,32 @@ export default {
       utils.downloadFile(aCSVRows, sFileName, 'sif');
     },
     proteinLinkFormatter: function proteinLinkFormatter(iProteinId) {
-      window.open('/protein/'+iProteinId+'/summary', '_blank');
+      window.open('/vue/protein/'+iProteinId+'/summary', '_blank');
     },
 
     proteinLinkBcFormatter: function proteinLinkBcFormatter(iProteinId) {
-      window.open('/protein/'+iProteinId+'/assay', '_blank');
+      window.open('/vue/protein/'+iProteinId+'/assay', '_blank');
     },
 
     proteinLinkNodeFormatter: function proteinLinkNodeFormatter(iProteinId) {
-      window.open('/protein/'+iProteinId+'/interactions', '_blank');
+      window.open('/vue/protein/'+iProteinId+'/interactions', '_blank');
     },
 
     proteinLinkExpressionFormatter: function proteinLinkExpressionFormatter(iProteinId) {
-      window.open('/protein/'+iProteinId+'/expression', '_blank');
+      window.open('/vue/protein/'+iProteinId+'/expression', '_blank');
     },
 
     proteinLinkCtFormatter: function proteinLinkCtFormatter(asUniProtName) {
       if (typeof asUniProtName === 'string') {
-        window.open('/analytics/combinationTreatment?protein_name='+ asUniProtName, '_blank');
+        window.open('/vue/analytics/combinationTreatment?protein_name='+ asUniProtName, '_blank');
       } else if (typeof asUniProtName === 'undefined') {
         return '';
       }
-      window.open('/analytics/combinationTreatment?protein_name='+ asUniProtName.join(','), '_blank');
+      window.open('/vue/analytics/combinationTreatment?protein_name='+ asUniProtName.join(','), '_blank');
     },
 
     proteinLinkDsFormatter: function proteinLinkDsFormatter(sUniProtName) {
-      window.open('/analytics/selectivity?protein_name=' + sUniProtName, '_blank');
+      window.open('/vue/analytics/selectivity?protein_name=' + sUniProtName, '_blank');
     },
 
     // array consists of Data from D3 graph
@@ -439,7 +439,7 @@ export default {
         return '';
       }
       var iTaxCode = this.$store.state.cookie;
-      window.open('/analytics/expressionHeatmap?proteins=' + asUniProtNameHeatmap.join('%3B') + '&quantification=1&biologicalSource=tissue%3Bfluid&calculationMethod=0&swissprotOnly=1&noIsoforms=1&taxcode=' + iTaxCode, '_blank');
+      window.open('/vue/analytics/expressionHeatmap?proteins=' + asUniProtNameHeatmap.join('%3B') + '&quantification=1&biologicalSource=tissue%3Bfluid&calculationMethod=0&swissprotOnly=1&noIsoforms=1&taxcode=' + iTaxCode, '_blank');
     },
 
     setGraphRadioModel: function(oData) {
