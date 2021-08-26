@@ -59,7 +59,7 @@ export default {
     getData: function () {
       if (this.selectedDrugs && this.selectedTissues && !(this.selectedDrugs === '-1' && this.selectedTissues === 'not')) {
         let that = this
-        let urlDatasets = '/proteomicsdb/logic/cellSelectivity/getDataForVioPlots.xsjs'
+        let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/cellSelectivity/getDataForVioPlots.xsjs'
 
         axios.get(urlDatasets, {
           params: {

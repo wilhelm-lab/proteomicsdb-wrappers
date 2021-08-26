@@ -86,7 +86,7 @@ export default {
       if (this.selectedKey) {
         let that = this
         
-        let urlDatasets = '/proteomicsdb/logic/cellSelectivity/getDataForVioPlots.xsjs'
+        let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/cellSelectivity/getDataForVioPlots.xsjs'
         axios.get(urlDatasets, {
           params: {
             dataset_id: that.selectedDataset.datasetId,
