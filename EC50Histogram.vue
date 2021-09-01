@@ -76,7 +76,7 @@ export default {
   methods: {
     getData: function () {  
       let that = this
-      let urlCurveData = '/proteomicsdb/logic/ptmCurves/getEC50Data.xsjs'
+      let urlCurveData = this.$store.state.host + '/proteomicsdb/logic/ptmCurves/getEC50Data.xsjs'
       if (this.selectedDataset) {
         axios.get(urlCurveData, {
           params: {

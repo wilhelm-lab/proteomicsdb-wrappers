@@ -66,7 +66,7 @@ export default {
   methods: {
     getData: function () {  
       let that = this
-      let urlCurveData = '/proteomicsdb/logic/ptmCurves/getIntensityData.xsjs'
+      let urlCurveData = this.$store.state.host + '/proteomicsdb/logic/ptmCurves/getIntensityData.xsjs'
       if (this.selectedDataset) {
         axios.get(urlCurveData, {
           params: {
