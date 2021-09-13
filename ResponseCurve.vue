@@ -9,6 +9,7 @@
     :title="title"
     :properties="responseCurveModel.properties"
     @update-curve-styles="updateCurveStyles"
+    v-on="$listeners"
     />
 </template>
 
