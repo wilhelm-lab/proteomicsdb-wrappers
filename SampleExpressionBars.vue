@@ -1,92 +1,92 @@
 <template>
-  <v-card style="max-height:750px;">
+  <v-card style="max-height: 750px">
     <expressionbars
-          ref="expressionbarsref"
-          :data="barData"
-          :barAttributes="barAttributes"
-          :svgAttributes="svgAttributes"
-          @sampleBarSelected="barSelected"
-          />
+      ref="expressionbarsref"
+      :data="barData"
+      :barAttributes="barAttributes"
+      :svgAttributes="svgAttributes"
+      @sampleBarSelected="barSelected"
+    />
     <sampleInfoPopUp
-          :openDialog="publicSampleSelected"
-          :sampleId="selectedSampleId" 
-          :omics="omicsType"
-          @closePopUp="resetSelectedSample"
-          ></sampleInfoPopUp>
+      :openDialog="publicSampleSelected"
+      :sampleId="selectedSampleId"
+      :omics="omicsType"
+      @closePopUp="resetSelectedSample"
+    ></sampleInfoPopUp>
     <v-snackbar
-          v-model="privateAlert"
-          :color="$store.state.selectedOrganismShown.primaryColor"
-          >
-          {{ privateAlertText }}
+      v-model="privateAlert"
+      :color="$store.state.selectedOrganismShown.primaryColor"
+    >
+      {{ privateAlertText }}
 
-          <template v-slot:action="{ attrs }">
-            <v-btn
+      <template v-slot:action="{ attrs }">
+        <v-btn
           text
           class="white--text"
           v-bind="attrs"
           @click="privateAlert = false"
-          >
+        >
           Close
-            </v-btn>
-          </template>
+        </v-btn>
+      </template>
     </v-snackbar>
   </v-card>
 </template>
 
 <script>
-import expressionbars from '@/vue-d3-components/ExpressionBars';
-import sampleInfoPopUp from '@/views/popup/SampleInfoPopUp'
-import axios from 'axios';
+import expressionbars from "@/vue-d3-components/ExpressionBars";
+import sampleInfoPopUp from "@/views/popup/SampleInfoPopUp";
+import axios from "axios";
 export default {
-  name: 'proteinExpressionBodymap',
+  name: "proteinExpressionBodymap",
   components: {
     expressionbars,
-    sampleInfoPopUp
+    sampleInfoPopUp,
   },
   props: {
     minWidth: {
       type: Number,
-      default: 400
+      default: 400,
     },
     minHeight: {
       type: Number,
-      default: 400
+      default: 400,
     },
     data: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     proteinId: {
       type: String,
-      default: null
+      default: null,
     },
     omicsType: {
       type: String,
-      default: null
+      default: null,
     },
     quantification: {
       type: String,
-      default: null
+      default: null,
     },
     tissue_category: {
       type: String,
-      default: null
+      default: null,
     },
     tissues_selected: {
       type: String,
-      default: null
+      default: null,
     },
     scope: {
       type: String,
-      default: null
+      default: null,
     },
     group_by_tissue: {
       type: String,
-      default: null
+      default: null,
     },
     calculation: {
       type: String,
-      default: null
+      default: null,
     },
   },
   data: function () {
@@ -108,24 +108,33 @@ export default {
         },
         tipsy: function tipsy(d) {
           var mouseOverLabel = d.EXPERIMENT_NAME;
-          if (d.STATUS === 'public') {
-            mouseOverLabel = mouseOverLabel + ' | ' + d.SAMPLE_NAME;
+          if (d.STATUS === "public") {
+            mouseOverLabel = mouseOverLabel + " | " + d.SAMPLE_NAME;
           }
           if (d.SAP_SYNONYM) {
-            mouseOverLabel = mouseOverLabel + '<hr>' + d.TISSUE_NAME + ' | ' + d.SAP_SYNONYM + ' <hr>Intensity: ' + d.NORMALIZED_INTENSITY
-            .toFixed(2);
+            mouseOverLabel =
+              mouseOverLabel +
+              "<hr>" +
+              d.TISSUE_NAME +
+              " | " +
+              d.SAP_SYNONYM +
+              " <hr>Intensity: " +
+              d.NORMALIZED_INTENSITY.toFixed(2);
           } else {
-            mouseOverLabel = mouseOverLabel + '<hr>' + d.TISSUE_NAME + ' <hr>Intensity: ' + d.NORMALIZED_INTENSITY.toFixed(
-            2);
+            mouseOverLabel =
+              mouseOverLabel +
+              "<hr>" +
+              d.TISSUE_NAME +
+              " <hr>Intensity: " +
+              d.NORMALIZED_INTENSITY.toFixed(2);
           }
           return mouseOverLabel;
-        }
-
+        },
       },
       svgAttributes: {
-        x_axis_label: 'intensity (log2 top3)',
-        y_axis_label: 'samples',
-        title: 'Sample specific protein expression',
+        x_axis_label: "intensity (log2 top3)",
+        y_axis_label: "samples",
+        title: "Sample specific protein expression",
         width: 260,
         margin: {
           top: 55,
@@ -133,44 +142,43 @@ export default {
           right: 20,
           bottom: 0,
           chart: {
-            top: 0
-          }
-        }
+            top: 0,
+          },
+        },
       },
       barData: [],
       privateAlert: false,
-      privateAlertText: 'Sorry - This data is not yet publicly available.',
+      privateAlertText: "Sorry - This data is not yet publicly available.",
       publicSampleSelected: false,
-      selectedSampleId: null
+      selectedSampleId: null,
     };
   },
-  computed: {
-  },
+  computed: {},
   watch: {
-    data: function( newData ) {
+    data: function (newData) {
       if (this.proteinId === null && newData) {
         this.barData = newData;
       }
     },
-    proteinId: function() {
+    proteinId: function () {
       this.getData();
     },
     tissues_selected: function (sTissues) {
-      if(sTissues !== ''){
+      if (sTissues !== "") {
         this.getData();
       }
-    }
+    },
   },
   methods: {
     resetSelectedSample: function () {
       this.publicSampleSelected = false;
       this.selectedSampleId = null;
     },
-    toggleBar: function(data) {
+    toggleBar: function (data) {
       this.$refs.expressionbarsref.toggleBar(data);
     },
-    barSelected: function(data) {
-      if (data.STATUS === 'private') {
+    barSelected: function (data) {
+      if (data.STATUS === "private") {
         this.privateAlert = true;
       } else {
         this.privateAlert = false;
@@ -178,32 +186,37 @@ export default {
         this.publicSampleSelected = true;
       }
     },
-    getData: function () {  
+    getData: function () {
       let that = this;
 
-      let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/getExpressionWrapper.xsjs'
-      axios.get(urlDatasets, { params: {
-          protein_id: that.proteinId,
-          quantification: that.quantification,
-          tissue_category: that.tissue_category,
-          tissues_selected: that.tissues_selected,
-          scope: that.scope,
-          omics: that.omicsType,
-          group_by_tissue: that.group_by_tissue,
-          calculation: that.calculation
-      }})
-      .then(function (response) {
-        that.barData = response.data;
-      })
+      let urlDatasets =
+        this.$store.state.host +
+        "/proteomicsdb/logic/getExpressionWrapper.xsjs";
+      axios
+        .get(urlDatasets, {
+          params: {
+            protein_id: that.proteinId,
+            quantification: that.quantification,
+            tissue_category: that.tissue_category,
+            tissues_selected: that.tissues_selected,
+            scope: that.scope,
+            omics: that.omicsType,
+            group_by_tissue: that.group_by_tissue,
+            calculation: that.calculation,
+          },
+        })
+        .then(function (response) {
+          that.barData = response.data;
+        });
     },
     getSVG: function () {
       return this.$refs.expressionbarsref.getSVG();
-    }
+    },
   },
   mounted() {
-    if (this.tissues_selected !== '') {
+    if (this.tissues_selected !== "") {
       this.getData();
     }
-  }
-}
+  },
+};
 </script>

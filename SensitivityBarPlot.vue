@@ -8,53 +8,56 @@
     :minHeight="minHeight"
     :title="barPlotTitle"
     @send-message="onBarSelected"
-    />
+  />
 </template>
 
 <script>
-import barplot from '@/vue-d3-components/GenericBarPlot'
+import barplot from "@/vue-d3-components/GenericBarPlot";
 
 export default {
-  name: 'sensitivitybarplot',
+  name: "sensitivitybarplot",
   components: {
-    barplot: barplot
+    barplot: barplot,
   },
   props: {
     minWidth: {
       type: Number,
-      default: 200
+      default: 200,
     },
     minHeight: {
       type: Number,
-      default: 200
+      default: 200,
     },
     selectedKey: {
       type: String,
-      default: ''
+      default: "",
     },
     violinModel: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   computed: {
-    barPlotModel: function(){
-      if(this.selectedKey){
-      return this.violinModel.filter(model => model.AttributeType === this.selectedKey)[0];
-      }
-      else{
+    barPlotModel: function () {
+      if (this.selectedKey) {
+        return this.violinModel.filter(
+          (model) => model.AttributeType === this.selectedKey
+        )[0];
+      } else {
         return null;
       }
     },
-    
+
     barPlotTitle: function () {
-      return this.selectedKey + "  values for selected drug/cell line combination"
-    }
+      return (
+        this.selectedKey + "  values for selected drug/cell line combination"
+      );
+    },
   },
   methods: {
     onBarSelected: function (obj) {
-      this.$emit('send-message', obj)
+      this.$emit("send-message", obj);
     },
-  }
-}
+  },
+};
 </script>

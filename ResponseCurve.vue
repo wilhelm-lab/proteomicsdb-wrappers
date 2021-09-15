@@ -1,5 +1,5 @@
 <template>
-  <lineplot 
+  <lineplot
     v-if="responseCurveModel"
     id="ic50Plot"
     :curveParameters="responseCurveModel.parameter"
@@ -10,77 +10,83 @@
     :properties="responseCurveModel.properties"
     @update-curve-styles="updateCurveStyles"
     v-on="$listeners"
-    />
+  />
 </template>
 
 <script>
-import axios from 'axios'
-import lineplot from '@/vue-d3-components/GenericLinePlot'
+import axios from "axios";
+import lineplot from "@/vue-d3-components/GenericLinePlot";
 
 export default {
-  name: 'responsecurve',
+  name: "responsecurve",
   components: {
-    lineplot: lineplot
+    lineplot: lineplot,
   },
   props: {
     minWidth: {
-        type: Number,
-        default: 200
+      type: Number,
+      default: 200,
     },
     minHeight: {
-        type: Number,
-        default: 200
+      type: Number,
+      default: 200,
     },
     title: {
-        type: String,
-        default: ''
+      type: String,
+      default: "",
     },
     sModelIds: {
-        type: String,
-        default: ''
+      type: String,
+      default: "",
     },
     selectedDataset: {
-        type: Object,
-        default: null
+      type: Object,
+      default: null,
     },
     dataType: {
-        type: String,
-        default: 'cellSelectivity'
-    }
+      type: String,
+      default: "cellSelectivity",
+    },
   },
   data: function () {
     return {
-      responseCurveModel: null
-    }
+      responseCurveModel: null,
+    };
   },
   watch: {
     sModelIds: function () {
-      this.getData()
+      this.getData();
     },
     datasetId: function () {
-      this.getData()
-    }
+      this.getData();
+    },
   },
   methods: {
-    getData: function () {  
-      let that = this
-      let urlCurveData = this.$store.state.host+'/proteomicsdb/logic/' + this.dataType + '/getCurveData.xsjs'
-      if (this.sModelIds !== '' && this.selectedDataset) {
-        axios.get(urlCurveData, {
-          params: {
-            dr_model_ids: this.sModelIds,
-            dataset_id: this.selectedDataset.datasetId
-          }})
-          .then(function (response) {
-            that.responseCurveModel = response.data
+    getData: function () {
+      let that = this;
+      let urlCurveData =
+        this.$store.state.host +
+        "/proteomicsdb/logic/" +
+        this.dataType +
+        "/getCurveData.xsjs";
+      if (this.sModelIds !== "" && this.selectedDataset) {
+        axios
+          .get(urlCurveData, {
+            params: {
+              dr_model_ids: this.sModelIds,
+              dataset_id: this.selectedDataset.datasetId,
+            },
           })
+          .then(function (response) {
+            that.responseCurveModel = response.data;
+          });
       } else {
-        this.responseCurveModel = null
+        this.responseCurveModel = null;
       }
     },
     updateCurveStyles: function (oCurveStyleMapping) {
-      this.$emit('update-curve-styles', oCurveStyleMapping)
-    }
-  }
-}
+      this.$emit("update-curve-styles", oCurveStyleMapping);
+    },
+  },
+};
 </script>

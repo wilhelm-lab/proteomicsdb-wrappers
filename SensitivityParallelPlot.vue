@@ -9,31 +9,31 @@
 </template>
 
 <script>
-import parallelplot from '@/vue-d3-components/D3ParallelGeneric'
+import parallelplot from "@/vue-d3-components/D3ParallelGeneric";
 
 export default {
-  name: 'sensitivityparallelplot',
+  name: "sensitivityparallelplot",
   components: {
-    parallelplot: parallelplot
+    parallelplot: parallelplot,
   },
   props: {
     minWidth: {
       type: Number,
-      default: 200
+      default: 200,
     },
     minHeight: {
       type: Number,
-      default: 200
+      default: 200,
     },
     violinModel: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   methods: {
     keyChange: function (selectedLinesForBarPlot, selectedKey) {
-      this.$emit('keyChange', selectedLinesForBarPlot, selectedKey)
+      this.$emit("keyChange", selectedLinesForBarPlot, selectedKey);
     },
-  }
-}
+  },
+};
 </script>

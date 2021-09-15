@@ -1,72 +1,74 @@
 <template>
   <fdrplot
-  ref="fdrRef"
-  id='specificGeneFDR'
-  :height='"300px"'
-  :data='geneFdrModel'
-  :targetName='targetName'
-  :xAxisLabel='"Q-score"'
-  :yAxisLabel='"# of PSMs"'
-  :logY='true'
-  :psmLevel='true'
+    ref="fdrRef"
+    id="specificGeneFDR"
+    :height="'300px'"
+    :data="geneFdrModel"
+    :targetName="targetName"
+    :xAxisLabel="'Q-score'"
+    :yAxisLabel="'# of PSMs'"
+    :logY="true"
+    :psmLevel="true"
   />
 </template>
 
 <script>
-import axios from 'axios'
-import fdrplot from '@/vue-d3-components/FDRGraph'
+import axios from "axios";
+import fdrplot from "@/vue-d3-components/FDRGraph";
 
 export default {
-  name: 'specificGeneFdrPlot',
+  name: "specificGeneFdrPlot",
   components: {
-    fdrplot: fdrplot
+    fdrplot: fdrplot,
   },
   props: {
     minWidth: {
       type: Number,
-      default: 400
+      default: 400,
     },
     minHeight: {
       type: Number,
-      default: 400
+      default: 400,
     },
     proteinId: {
       type: String,
-      default: null
+      default: null,
     },
     targetName: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   data: function () {
     return {
-      geneFdrModel: null
-    }
+      geneFdrModel: null,
+    };
   },
-  computed: {
-  },
-  watch: {
-  },
+  computed: {},
+  watch: {},
   methods: {
-    getData: function () {  
-        let that = this
+    getData: function () {
+      let that = this;
 
-        let urlDatasets = this.$store.state.host+'/proteomicsdb/logic/fdr/getGeneSpecificFDR.xsjs'
-        axios.get(urlDatasets, {
+      let urlDatasets =
+        this.$store.state.host +
+        "/proteomicsdb/logic/fdr/getGeneSpecificFDR.xsjs";
+      axios
+        .get(urlDatasets, {
           params: {
-            proteinId: this.proteinId
-        }})
-        .then(function (response) {
-          that.geneFdrModel = response.data
+            proteinId: this.proteinId,
+          },
         })
+        .then(function (response) {
+          that.geneFdrModel = response.data;
+        });
     },
-    getSVG: function() {
+    getSVG: function () {
       return this.$refs.fdrRef.getSVG();
-    }
+    },
   },
   mounted() {
-    this.getData()
-  }
-}
+    this.getData();
+  },
+};
 </script>

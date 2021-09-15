@@ -1,5 +1,5 @@
 <template>
-  <histogram 
+  <histogram
     v-if="chartData"
     id="ec50Histogram"
     :chartData="chartData"
@@ -10,94 +10,102 @@
     :minWidth="minWidth"
     :title="title"
     :xlabel="xlabel"
-    />
+  />
 </template>
 
 <script>
-import axios from 'axios'
-import histogram from '@/vue-d3-components/GenericHistogram'
+import axios from "axios";
+import histogram from "@/vue-d3-components/GenericHistogram";
 
 export default {
-  name: 'ec50histogram',
+  name: "ec50histogram",
   components: {
-    histogram: histogram
+    histogram: histogram,
   },
   props: {
     minWidth: {
-        type: Number,
-        default: 200
+      type: Number,
+      default: 200,
     },
     minHeight: {
-        type: Number,
-        default: 200
+      type: Number,
+      default: 200,
     },
     title: {
-        type: String,
-        default: ''
+      type: String,
+      default: "",
     },
     xlabel: {
-        type: String,
-        default: ''
+      type: String,
+      default: "",
     },
     sModelIds: {
-        type: String,
-        default: ''
+      type: String,
+      default: "",
     },
     selectedDataset: {
-        type: Object,
-        default: null
+      type: Object,
+      default: null,
     },
     selectedLines: {
-        type: Array,
-        default: null
+      type: Array,
+      default: null,
     },
     minDose: {
-        type: Number,
-        default: 1e-20
+      type: Number,
+      default: 1e-20,
     },
     maxDose: {
-        type: Number,
-        default: 1e20
-    }
+      type: Number,
+      default: 1e20,
+    },
   },
   data: function () {
     return {
-      chartData: null
-    }
+      chartData: null,
+    };
   },
   watch: {
     sModelIds: function () {
-      this.getData()
+      this.getData();
     },
     selectedDataset: function () {
-      this.getData()
-    }
+      this.getData();
+    },
   },
   methods: {
-    getData: function () {  
-      let that = this
-      let urlCurveData = this.$store.state.host + '/proteomicsdb/logic/ptmCurves/getEC50Data.xsjs'
+    getData: function () {
+      let that = this;
+      let urlCurveData =
+        this.$store.state.host +
+        "/proteomicsdb/logic/ptmCurves/getEC50Data.xsjs";
       if (this.selectedDataset) {
-        axios.get(urlCurveData, {
-          params: {
-            experiment_design_id: this.selectedDataset.experimentDesignId,
-            min_dose: this.selectedDataset.minDose * this.getDoseUnitMultiplier(this.selectedDataset),
-            max_dose: this.selectedDataset.maxDose * this.getDoseUnitMultiplier(this.selectedDataset)
-          }})
-          .then(function (response) {
-            that.chartData = response.data
+        axios
+          .get(urlCurveData, {
+            params: {
+              experiment_design_id: this.selectedDataset.experimentDesignId,
+              min_dose:
+                this.selectedDataset.minDose *
+                this.getDoseUnitMultiplier(this.selectedDataset),
+              max_dose:
+                this.selectedDataset.maxDose *
+                this.getDoseUnitMultiplier(this.selectedDataset),
+            },
           })
+          .then(function (response) {
+            that.chartData = response.data;
+          });
       } else {
-        this.chartData = null
+        this.chartData = null;
       }
     },
-    getDoseUnitMultiplier: function(dataset) {
+    getDoseUnitMultiplier: function (dataset) {
       if (dataset.doseUnit === "nanomolar") {
         return 1e-9;
       } else {
         return 1.0;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

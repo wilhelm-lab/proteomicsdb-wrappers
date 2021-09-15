@@ -1,36 +1,36 @@
 <template>
-  <v-card style="height:750px;max-height:750px;">
+  <v-card style="height: 750px; max-height: 750px">
     <expressionbars
-          ref="expressionbarsref"
-          :data="data"
-          :barAttributes="barAttributes"
-          :svgAttributes="svgAttributes"
-          @barSelected="barSelected"
-          />
+      ref="expressionbarsref"
+      :data="data"
+      :barAttributes="barAttributes"
+      :svgAttributes="svgAttributes"
+      @barSelected="barSelected"
+    />
   </v-card>
 </template>
 
 <script>
-import expressionbars from '@/vue-d3-components/ExpressionBars';
+import expressionbars from "@/vue-d3-components/ExpressionBars";
 
 export default {
-  name: 'proteinExpressionBodymap',
+  name: "proteinExpressionBodymap",
   components: {
-    expressionbars
+    expressionbars,
   },
   props: {
     minWidth: {
       type: Number,
-      default: 400
+      default: 400,
     },
     minHeight: {
       type: Number,
-      default: 400
+      default: 400,
     },
     data: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data: function () {
     return {
@@ -50,18 +50,23 @@ export default {
           return d.TISSUE_ID;
         },
         tipsy: function tipsy(d) {
-          var mouseOverLabel = '';
+          var mouseOverLabel = "";
           if (d.SAP_SYNONYM) {
-            mouseOverLabel = d.TISSUE_NAME + '<hr>';
+            mouseOverLabel = d.TISSUE_NAME + "<hr>";
           }
-          mouseOverLabel = mouseOverLabel + 'Id: ' + d.TISSUE_ID + '<hr> Intensity: ' + d.NORMALIZED_INTENSITY.toFixed(2);
+          mouseOverLabel =
+            mouseOverLabel +
+            "Id: " +
+            d.TISSUE_ID +
+            "<hr> Intensity: " +
+            d.NORMALIZED_INTENSITY.toFixed(2);
           return mouseOverLabel;
-        }
+        },
       },
       svgAttributes: {
-        x_axis_label: 'intensity (log2 top3)',
-        y_axis_label: 'tissues',
-        title: 'Median protein expression',
+        x_axis_label: "intensity (log2 top3)",
+        y_axis_label: "tissues",
+        title: "Median protein expression",
         width: 260,
         margin: {
           top: 55,
@@ -69,34 +74,31 @@ export default {
           right: 20,
           bottom: 0,
           chart: {
-            top: 0
-          }
-        }
-      }
+            top: 0,
+          },
+        },
+      },
     };
   },
-  computed: {
-  },
-  watch: {
-  },
+  computed: {},
+  watch: {},
   methods: {
-    toggleBarTissueId: function(data) {
+    toggleBarTissueId: function (data) {
       this.$refs.expressionbarsref.toggleBarTissueId(data);
     },
-    toggleBar: function(data) {
+    toggleBar: function (data) {
       this.$refs.expressionbarsref.toggleBar(data);
     },
-    barSelected: function(data) {
-      this.$emit('barSelected', data);
+    barSelected: function (data) {
+      this.$emit("barSelected", data);
     },
     resetBarSelection: function () {
       this.$refs.expressionbarsref.resetBarSelection();
     },
-    getSVG: function() {
+    getSVG: function () {
       return this.$refs.expressionbarsref.getSVG();
-    }
+    },
   },
-  mounted() {
-  }
-}
+  mounted() {},
+};
 </script>
