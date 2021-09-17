@@ -423,7 +423,7 @@ import axios from "axios";
 import utils from "@/vue-d3-component-wrappers/common-lib/Utils.js";
 import edgePopup from "@/views/popup/InteractionNetworkEdgeOverlay";
 import interactiongraph from "@/vue-d3-components/InteractionNetwork";
-
+import router from "@/router";
 export default {
   name: "proteinInteractionGraph",
   components: {
@@ -682,6 +682,7 @@ export default {
     onSelectionModelChange: function onSelectionModelChange() {},
 
     onButtonNetwork: function onButtonNetwork() {
+      //I have the vague feeling that this is not doing anything...
       window.open("tesgt", "_blank");
     },
     onButtonPressExpand: function onButtonPressExpand() {
@@ -721,43 +722,40 @@ export default {
       utils.downloadFile(aCSVRows, sFileName, "sif");
     },
     proteinLinkFormatter: function proteinLinkFormatter(iProteinId) {
-      window.open("/vue/protein/" + iProteinId + "/summary", "_blank");
+      router.push("/vue/protein/" + iProteinId + "/summary");
     },
 
     proteinLinkBcFormatter: function proteinLinkBcFormatter(iProteinId) {
-      window.open("/vue/protein/" + iProteinId + "/assay", "_blank");
+      router.push("/vue/protein/" + iProteinId + "/assay");
     },
 
     proteinLinkNodeFormatter: function proteinLinkNodeFormatter(iProteinId) {
-      window.open("/vue/protein/" + iProteinId + "/interactions", "_blank");
+      router.push("/vue/protein/" + iProteinId + "/interactions");
     },
 
     proteinLinkExpressionFormatter: function proteinLinkExpressionFormatter(
       iProteinId
     ) {
-      window.open("/vue/protein/" + iProteinId + "/expression", "_blank");
+      router.push("/vue/protein/" + iProteinId + "/expression");
     },
 
     proteinLinkCtFormatter: function proteinLinkCtFormatter(asUniProtName) {
       if (typeof asUniProtName === "string") {
-        window.open(
-          "/vue/analytics/combinationTreatment?protein_name=" + asUniProtName,
-          "_blank"
+        router.push(
+          "/vue/analytics/combinationTreatment?protein_name=" + asUniProtName      
         );
       } else if (typeof asUniProtName === "undefined") {
         return "";
       }
-      window.open(
+      router.push(
         "/vue/analytics/combinationTreatment?protein_name=" +
-          asUniProtName.join(","),
-        "_blank"
+          asUniProtName.join(",")
       );
     },
 
     proteinLinkDsFormatter: function proteinLinkDsFormatter(sUniProtName) {
-      window.open(
-        "/vue/analytics/selectivity?protein_name=" + sUniProtName,
-        "_blank"
+      router.push(
+        "/vue/analytics/selectivity?protein_name=" + sUniProtName
       );
     },
 
@@ -767,12 +765,11 @@ export default {
         return "";
       }
       var iTaxCode = this.$store.state.cookie;
-      window.open(
+      router.push(
         "/vue/analytics/expressionHeatmap?proteins=" +
           asUniProtNameHeatmap.join("%3B") +
           "&quantification=1&biologicalSource=tissue%3Bfluid&calculationMethod=0&swissprotOnly=1&noIsoforms=1&taxcode=" +
-          iTaxCode,
-        "_blank"
+          iTaxCode
       );
     },
 
